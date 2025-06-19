@@ -21,6 +21,15 @@ expo-env.d.ts
 # Metro
 .metro-health-check*
 
+#Remove  all Android build files
+android/.gradle/
+android/app/build/
+android/app/src/main/assets/index.android.bundle
+android/app/src/main/res/raw/index.android.bundle
+android/app/src/main/res/raw/splash_screen.png
+#Remove all iOS build files     
+
+
 # debug
 npm-debug.*
 yarn-debug.*
