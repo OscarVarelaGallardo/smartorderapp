@@ -1,7 +1,9 @@
 import { router } from 'expo-router';
+
 import React, { useState } from 'react';
 import { Alert, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { stylesLogin } from '../../styles/login';
+
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState('')  
@@ -31,7 +33,6 @@ export default function ForgotPassword() {
       <TextInput
         style={{ ...stylesLogin.input, width: '80%' }}
         placeholder="email@ejemplo.com"
-
         autoCapitalize="none"
         value={email}
         onChangeText={setEmail}

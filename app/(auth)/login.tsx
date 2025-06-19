@@ -18,10 +18,11 @@ export default function LoginScreen() {
     try {
       const response = await loginUser(email.toLowerCase(), password);
       if (response !== 200) {
-        Alert.alert('Error', 'Credenciales incorrectas');
+        Alert.alert('Error', 'Revisa tu email y contraseña');
         return;
       }
       Alert.alert('Éxito', 'Has iniciado sesión correctamente');
+      
       setEmail('');
       setPassword('');
     } catch (error) {

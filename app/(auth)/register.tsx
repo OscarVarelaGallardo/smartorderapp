@@ -2,24 +2,45 @@ import { stylesRegister } from '@/styles/register';
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { Alert, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { useAuthStore } from '../../store/authStore';
+
 
 
 export default function RegisterScreen() {
-const [email, setEmail] = useState('');
-const [password, setPassword] = useState('');
-const [confirmPassword, setConfirmPassword] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const { registerUser } = useAuthStore();
 
-const handleRegister = () => {
-  if (!email || !password || !confirmPassword) {
-    Alert.alert('Alerta', 'Por favor, completa todos los campos');
-    return;
+  const handleRegister = async () => {
+    if (!email || !password || !confirmPassword) {
+      Alert.alert('Alerta', 'Por favor, completa todos los campos');
+      return;
+    }
+    if(password !== confirmPassword){
+      Alert.alert('Alerta','Las contraseñas deben ser iguales ')
+    }
+    try {
+      const response = await registerUser(email, password)
+      console.log('response', response)
+      if (response !== 201 ) {
+        Alert.alert('Error', 'Credenciales incorrectas');
+        return;
+      }
+      Alert.alert('Éxito', 'Ingresa tus credenciales para iniciar sesión');
+      setEmail('');
+      setPassword('');
+      router.push('/(auth)/login')
+
+    } catch (error) {
+      console.log(error)
+    }
   }
-}
 
   return (
     <View style={stylesRegister.container}>
       <Text
-        style={stylesRegister.title }
+        style={stylesRegister.title}
         accessibilityRole="header"
         accessibilityLabel="Pantalla de Registro"
         accessibilityHint="Pantalla para crear una nueva cuenta"
@@ -54,15 +75,15 @@ const handleRegister = () => {
       />
       <TouchableOpacity
         style={stylesRegister.button}
-        onPress={()=> handleRegister()}>
+        onPress={() => handleRegister()}>
         <Text
           style={stylesRegister.buttonText}
         >Registrarse</Text>
       </TouchableOpacity>
-        <Text style={stylesRegister.registerLink}
-          onPress={() => router.push('/(auth)/login')}
-          >¿Ya tienes una cuenta?</Text>
-     
+      <Text style={stylesRegister.registerLink}
+        onPress={() => router.push('/(auth)/login')}
+      >¿Ya tienes una cuenta?</Text>
+
     </View>
   );
 }

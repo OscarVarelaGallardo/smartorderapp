@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { fetchProfile, login } from '../services/authService';
+import { fetchProfile, login, registerUser } from '../services/authService';
 
 type User = {
     id: string;
@@ -14,6 +14,7 @@ type AuthStore = {
     loginUser: (email: string, password: string) => Promise<number>;
     fetchProfile: () => Promise<void>;
     logout: () => void;
+    registerUser: (email: string, password: string) => Promise<number>
 };
 
 const useAuthStore = create<AuthStore>((set) => ({
@@ -33,15 +34,15 @@ const useAuthStore = create<AuthStore>((set) => ({
             if (!token) {
                 return res.status;
             }
-            
+
             set({ token });
             const tokenPayload = JSON.parse(atob(token.split('.')[1]));
             const userId = tokenPayload.id;
             const profileRes = await fetchProfile(userId, token);
             set({ user: profileRes.data });
-            return  res.status
+            return res.status
         } catch (error: any) {
-            return error.response?.status || 500; 
+            return error.response?.status || 500;
 
         } finally {
             set({ isLoading: false });
@@ -72,6 +73,23 @@ const useAuthStore = create<AuthStore>((set) => ({
         } catch (error) {
             console.error('Error al obtener perfil', error);
         } finally {
+            set({ isLoading: false });
+        }
+    },
+
+    registerUser: async (email: string, password: string): Promise<number> => {
+        set({ isLoading: true });
+        try {
+            const response = await registerUser(email, password)
+           
+            if (response.status !== 200) {
+                return response.status
+            }
+            return response.status
+        } catch (error: any) {
+            return error.response.status || 500
+        }
+        finally {
             set({ isLoading: false });
         }
     },

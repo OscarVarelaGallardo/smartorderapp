@@ -1,7 +1,6 @@
 import API from '../services/api';
 
 const login = (email: string, password: string) => {
-   console.log('Logging in with:', { email, password });
    return API.post('login', { email, password });
 }
 
@@ -12,6 +11,10 @@ const fetchProfile = (id: string, token: string) =>
       }
    });
 
+const registerUser =( email:string, password:string)=>{
+  return  API.post('user',{email, password})
+}
 
-export { fetchProfile, login };
+
+export { fetchProfile, login, registerUser };
 
