@@ -1,7 +1,9 @@
+import { stylesLogin } from '@/styles/login';
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { Alert, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Alert, Image, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useAuthStore } from '../../store/authStore';
+
 
 export default function LoginScreen() {
   const [email, setEmail] = useState('');
@@ -36,17 +38,17 @@ export default function LoginScreen() {
 
   if (isLoading) {
     return (
-      <View style={styles.container}>
-        <Text style={styles.title}>Cargando...</Text>
+      <View style={stylesLogin.container}>
+        <Text style={stylesLogin.title}>Cargando...</Text>
       </View>
     );
   }
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Iniciar Sesión</Text>
+    <View style={stylesLogin.container}>
+      <Text style={stylesLogin.title}>Iniciar Sesión</Text>
       <TextInput
-        style={styles.input}
+        style={stylesLogin.input}
         placeholder="email@ejemplo.com"
         value={email}
         onChangeText={setEmail}
@@ -54,7 +56,7 @@ export default function LoginScreen() {
         keyboardType="email-address" // 👈 teclado para email
       />
       <TextInput
-        style={styles.input}
+        style={stylesLogin.input}
         placeholder="Contraseña"
         secureTextEntry
         autoCapitalize="none"
@@ -62,66 +64,29 @@ export default function LoginScreen() {
         onChangeText={setPassword}
         keyboardType="default" // 👈 teclado para texto
       />
+
+      <TouchableOpacity
+        disabled={isLoading}
+        style={stylesLogin.button}
+        onPress={handleLogin} >
+        <Text style={stylesLogin.buttonText}>Iniciar sesión</Text>
+      </TouchableOpacity>
       <View style={{ alignItems: 'center', marginTop: 20, marginBottom: 20 }}>
         <TouchableOpacity onPress={() => Alert.alert('Google Login', 'Funcionalidad no implementada aún')}>
           <Image source={require('../../assets/images/google-icon.png')} style={{ width: 34, height: 34 }} />
         </TouchableOpacity>
       </View>
-      <TouchableOpacity
-        disabled={isLoading}
-        style={styles.button}
-        onPress={handleLogin} >
-        <Text style={styles.buttonText}>Iniciar sesión</Text>
-      </TouchableOpacity>
-      
-     
-      <Text style={styles.registerLink} onPress={() => router.push('/(auth)/register')}>
-        ¿No tienes cuenta? Regístrate
-      </Text>
+      <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', gap: 10, marginTop: 20 }}>
+
+        <Text style={stylesLogin.registerLink} onPress={() => router.push('/(auth)/register')}>
+          ¿No tienes cuenta?  Regístrate
+        </Text>
+        <Text style={stylesLogin.registerLink} onPress={() => router.push('/(auth)/forgotPassword')}>
+          Recupera tu cuenta
+        </Text>
+      </View>
     </View>
 
 
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    padding: 24,
-    backgroundColor: '#fff',
-  },
-  title: {
-    fontSize: 28,
-    marginBottom: 32,
-    textAlign: 'center',
-    fontWeight: 'bold',
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: '#999',
-    padding: 12,
-    borderRadius: 8,
-    marginBottom: 16,
-  },
-  registerLink: {
-    marginTop: 20,
-    textAlign: 'center',
-    color: 'blue',
-    textDecorationLine: 'underline',
-  },
-  button: {
-    width: '50%',
-    alignSelf: 'center',
-    marginTop: 20,
-    backgroundColor: '#007bff',
-    padding: 10,
-    borderRadius: 8,
-  },
-  buttonText: {
-    color: '#fff',
-    textAlign: 'center',
-    fontWeight: 'bold',
-    fontSize: 16,
-  },
-});

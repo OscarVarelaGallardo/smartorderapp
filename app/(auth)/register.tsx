@@ -1,61 +1,67 @@
+import { stylesRegister } from '@/styles/register';
 import { router } from 'expo-router';
-import { Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { useState } from 'react';
+import { Alert, Text, TextInput, TouchableOpacity, View } from 'react-native';
+
 
 export default function RegisterScreen() {
+const [email, setEmail] = useState('');
+const [password, setPassword] = useState('');
+const [confirmPassword, setConfirmPassword] = useState('');
+
+const handleRegister = () => {
+  if (!email || !password || !confirmPassword) {
+    Alert.alert('Alerta', 'Por favor, completa todos los campos');
+    return;
+  }
+}
+
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    <View style={stylesRegister.container}>
       <Text
-        style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 20 }}
+        style={stylesRegister.title }
         accessibilityRole="header"
         accessibilityLabel="Pantalla de Registro"
         accessibilityHint="Pantalla para crear una nueva cuenta"
-      >Pantalla de Registro</Text>
+      >Registro</Text>
       <TextInput
-        style={{
-          height: 40, borderColor: 'gray', borderWidth: 1, width: '80%', marginBottom: 20,
-          borderRadius: 5,
-          paddingHorizontal: 10
-        }}
+        style={stylesRegister.input}
         placeholder="Email"
         autoCapitalize="none"
         keyboardType="email-address"
+        value={email}
+        onChangeText={setEmail}
+        accessibilityLabel="Campo de Email"
       />
       <TextInput
-        style={{
-          height: 40,
-          borderRadius: 5,
-          borderColor: 'gray', borderWidth: 1, width: '80%', marginBottom: 20, paddingHorizontal: 10
-        }}
+        style={stylesRegister.input}
         placeholder="Contraseña"
         secureTextEntry
         autoCapitalize="none"
+        value={password}
+        onChangeText={setPassword}
+        accessibilityLabel="Campo de Contraseña"
       />
       <TextInput
 
-        style={{
-          height: 40,
-          borderRadius: 5,
-          borderColor: 'gray', borderWidth: 1, width: '80%', marginBottom: 20, paddingHorizontal: 10
-        }}
+        style={stylesRegister.input}
         placeholder="Confirmar Contraseña"
         secureTextEntry
         autoCapitalize="none"
+        value={confirmPassword}
+        onChangeText={setConfirmPassword}
+        accessibilityLabel="Campo de Confirmar Contraseña"
       />
       <TouchableOpacity
-        style={{ backgroundColor: '#007bff', padding: 10, borderRadius: 5, width: '80%', alignItems: 'center' }}
-        onPress={() => console.log('Registro realizado')}>
+        style={stylesRegister.button}
+        onPress={()=> handleRegister()}>
         <Text
-          style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}
+          style={stylesRegister.buttonText}
         >Registrarse</Text>
       </TouchableOpacity>
-     
-      
-        <Text style={{ color: 'blue', 
-          textDecorationLine: 'underline',  marginTop: 20,
-          textAlign: 'center' }}
+        <Text style={stylesRegister.registerLink}
           onPress={() => router.push('/(auth)/login')}
           >¿Ya tienes una cuenta?</Text>
-   
      
     </View>
   );
