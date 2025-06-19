@@ -1,6 +1,6 @@
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Alert, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useAuthStore } from '../../store/authStore';
 
 export default function LoginScreen() {
@@ -62,14 +62,19 @@ export default function LoginScreen() {
         onChangeText={setPassword}
         keyboardType="default" // 👈 teclado para texto
       />
-
+      <View style={{ alignItems: 'center', marginTop: 20, marginBottom: 20 }}>
+        <TouchableOpacity onPress={() => Alert.alert('Google Login', 'Funcionalidad no implementada aún')}>
+          <Image source={require('../../assets/images/google-icon.png')} style={{ width: 34, height: 34 }} />
+        </TouchableOpacity>
+      </View>
       <TouchableOpacity
         disabled={isLoading}
         style={styles.button}
         onPress={handleLogin} >
         <Text style={styles.buttonText}>Iniciar sesión</Text>
       </TouchableOpacity>
-
+      
+     
       <Text style={styles.registerLink} onPress={() => router.push('/(auth)/register')}>
         ¿No tienes cuenta? Regístrate
       </Text>
@@ -117,5 +122,6 @@ const styles = StyleSheet.create({
     color: '#fff',
     textAlign: 'center',
     fontWeight: 'bold',
+    fontSize: 16,
   },
 });
